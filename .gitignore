@@ -1,6 +1,10 @@
 # Typescript build
 dist/
 
+# Временные файлы кэша и аудита npm/yarn
+*-audit.json 
+.*-audit.json
+
 # Logs
 logs
 *.log
