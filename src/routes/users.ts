@@ -4,8 +4,8 @@ import { validateUserId } from '../validators';
 
 const userRouter = Router();
 
-userRouter.get('/', getUsers); // GET /users
-userRouter.get('/:id', validateUserId, getUserById); // GET /users/:id
-userRouter.patch('/:id/block', validateUserId, blockUser); // PATCH /users/:id/block
+userRouter.get('/', getUsers); 
+userRouter.get('/:id', validateUserId, getUserById); 
+userRouter.patch('/:id/block', validateUserId, blockUser); 
 
 export default userRouter;
