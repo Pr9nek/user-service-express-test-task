@@ -1,5 +1,7 @@
 import express from 'express';
-import User from './models/user';
+import { errors } from 'celebrate';
+import router from './routes';
+import errorHandler from './middlewares/error';
 
 const app = express();
 
@@ -9,26 +11,9 @@ app.get('/', (req, res) => {
     res.json({ message: 'User Service API' });
 });
 
-// Тестовый маршрут для создания пользователя
-app.post('/test-user', async (req, res) => {
-    try {
-        const { fullName, birthDate, email, password, role, isActive } = req.body;
-        const user = await User.create({
-            fullName,
-            birthDate,
-            email,
-            password,
-            role,
-            isActive,
-        });
-        res.status(201).json(user);
-    } catch (err: unknown) {
-        if (err instanceof Error) {
-            res.status(500).json({ message: 'Error creating user', error: err.message });
-        } else {
-            res.status(500).json({ message: 'Error creating user', error: String(err) });
-        }
-    }
-});
+app.use(router);
+
+app.use(errors()); // Обработчик ошибок celebrate
+app.use(errorHandler); // Кастомный обработчик ошибок
 
 export default app;

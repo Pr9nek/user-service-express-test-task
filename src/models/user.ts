@@ -40,6 +40,7 @@ const userSchema = new Schema<IUser>({
         type: String,
         required: [true, 'Password is required'],
         minlength: [6, 'Password must be at least 6 characters'],
+        select: false, // Скрываем пароль при стандартных запросах
     },
     role: {
         type: String,
@@ -64,7 +65,7 @@ userSchema.pre('save', async function (next) {
         const salt = await bcrypt.genSalt(SALT_ROUNDS);
         this.password = await bcrypt.hash(this.password, salt);
         next();
-    } catch (err: unknown) {
+    } catch (err) {
         next(err as Error);
     }
 });
