@@ -7,6 +7,10 @@ dotenv.config();
 const PORT = process.env.PORT || 3000;
 const MONGO_URL = process.env.MONGO_URL || 'mongodb://localhost:27017/users_db';
 
+// Включает строгое поведение запросов Mongoose. 
+// Запрещает запросы по полям, не определенным в схеме (лучшая практика безопасности).
+// Начиная с Mongoose 7 это значение по умолчанию, но явно устанавливаем в true.
+mongoose.set('strictQuery', true);
 mongoose.connect(MONGO_URL)
 .then(() => {
     console.log('Connected to MongoDB');
