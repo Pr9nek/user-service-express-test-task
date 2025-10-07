@@ -4,7 +4,7 @@ interface IError extends Error {
     statusCode: number;
 }
 
-const errorHandler = ((err: IError, req: Request, res: Response, next: NextFunction) => {
+const errorHandler = ((err: IError, req: Request, res: Response, next: NextFunction): void => {
     // если у ошибки нет статуса, выставляем 500
     const { statusCode = 500, message } = err;
 

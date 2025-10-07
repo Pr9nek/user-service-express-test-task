@@ -11,7 +11,7 @@ interface AuthRequest extends Request {
     user?: JwtPayload;
 }
 
-export const auth = (req: AuthRequest, res: Response, next: NextFunction) => {
+export const auth = (req: AuthRequest, res: Response, next: NextFunction): void => {
     const token = req.headers.authorization?.replace('Bearer ', '');
     if (!token) {
         throw new AuthenticationError('Требуется авторизация');

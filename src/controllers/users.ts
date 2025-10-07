@@ -9,7 +9,7 @@ interface AuthRequest extends Request {
     user?: { userId: string; role: 'admin' | 'user' };
 }
 
-export const getUserById = async (req: AuthRequest, res: Response, next: NextFunction) => {
+export const getUserById = async (req: AuthRequest, res: Response, next: NextFunction): Promise<void> => {
     try {
         const { id } = req.params;
         const currentUser = req.user;
@@ -20,7 +20,7 @@ export const getUserById = async (req: AuthRequest, res: Response, next: NextFun
             throw new AuthenticationError('Доступ запрещён');
         }
         const user = await User.findById(id).orFail(new NotFoundError('Пользователь не найден'));
-        return res.status(constants.HTTP_STATUS_OK).json({
+        res.status(constants.HTTP_STATUS_OK).json({
             _id: user._id,
             fullName: user.fullName,
             email: user.email,
@@ -32,14 +32,14 @@ export const getUserById = async (req: AuthRequest, res: Response, next: NextFun
     }
 };
 
-export const getUsers = async (req: AuthRequest, res: Response, next: NextFunction) => {
+export const getUsers = async (req: AuthRequest, res: Response, next: NextFunction): Promise<void> => {
     try {
         const currentUser = req.user;
         if (!currentUser || currentUser.role !== 'admin') {
             throw new AuthenticationError('Доступ запрещён');
         }
         const users = await User.find({});
-        return res.status(constants.HTTP_STATUS_OK).json(
+        res.status(constants.HTTP_STATUS_OK).json(
             users.map((user) => ({
                 _id: user._id,
                 fullName: user.fullName,
@@ -53,7 +53,7 @@ export const getUsers = async (req: AuthRequest, res: Response, next: NextFuncti
     }
 };
 
-export const blockUser = async (req: AuthRequest, res: Response, next: NextFunction) => {
+export const blockUser = async (req: AuthRequest, res: Response, next: NextFunction): Promise<void> => {
     try {
         const { id } = req.params;
         const currentUser = req.user;
@@ -69,7 +69,7 @@ export const blockUser = async (req: AuthRequest, res: Response, next: NextFunct
         }
         user.isActive = false;
         await user.save();
-        return res.status(constants.HTTP_STATUS_OK).json({
+        res.status(constants.HTTP_STATUS_OK).json({
             _id: user._id,
             fullName: user.fullName,
             email: user.email,

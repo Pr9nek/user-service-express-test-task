@@ -7,7 +7,7 @@ import { BadRequestError } from '../errors/bad_request_error';
 import { ConflictError } from '../errors/conflict_error';
 import { createToken } from '../utils/jwt';
 
-export const signup = async (req: Request, res: Response, next: NextFunction) => {
+export const signup = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
         const { fullName, birthDate, email, password, role, isActive } = req.body;
         const user = await User.create({
@@ -22,7 +22,7 @@ export const signup = async (req: Request, res: Response, next: NextFunction) =>
         // Явно возвращаем только безопасные поля
         const { _id, fullName: createdFullName, email: createdEmail, role: createdRole, isActive: createdIsActive } = user;
 
-        return res.status(constants.HTTP_STATUS_CREATED).json({
+        res.status(constants.HTTP_STATUS_CREATED).json({
             _id,
             fullName: createdFullName,
             email: createdEmail,
@@ -40,7 +40,7 @@ export const signup = async (req: Request, res: Response, next: NextFunction) =>
     }
 };
 
-export const signin = async (req: Request, res: Response, next: NextFunction) => {
+export const signin = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
         const { email, password } = req.body;
 
